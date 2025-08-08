@@ -1,0 +1,56 @@
+<div class="field">
+  <form [formGroup]="form" (ngSubmit)="onSave()">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Class Name</th>
+          <th>Courses</th>
+          <th>Save</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Auto</td>
+          <td><input type="text" formControlName="name" /></td>
+          <td><input type="text" formControlName="className" /></td>
+          <td><input type="text" formControlName="courses" /></td>
+          <td>
+            <button type="submit">{{ isEdit ? "Update" : "Save" }}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  <div class="show-info">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Courses</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of data">
+          <td>{{ items.id }}</td>
+          <td>{{ items.name }}</td>
+          <td>{{ items.className }}</td>
+          <td>{{ items.courses }}</td>
+          <td>
+            <button (click)="editCandidate(items)">edit</button
+            ><button (click)="delCandidate(items)">Delete</button>
+          </td>
+        </tr>
+        <td>
+          <button (click)="getAllCandidates()">See ALL</button
+          ><button (click)="clear()">Clear</button>
+        </td>
+      </tbody>
+    </table>
+  </div>
+</div>
