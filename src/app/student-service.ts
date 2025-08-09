@@ -25,4 +25,7 @@ export class StudentService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  getCandidateById(id: number): Observable<StudentData> {
+    return this.http.get<StudentData>(`${this.apiUrl}/${id}`);
+  }
 }

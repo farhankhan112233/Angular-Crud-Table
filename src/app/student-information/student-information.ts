@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -35,6 +35,7 @@ export class StudentInformation {
   ngOnInit() {
     this.formValues();
   }
+
   onSave() {
     if (this.form.invalid) {
       alert('Invalid Fields');
@@ -50,17 +51,15 @@ export class StudentInformation {
       };
       this.studentService.update(updatedDto).subscribe({
         next: (res) => {
-          const index = this.data.findIndex((d) => d.id === this.editingId);
-          if (index !== -1) this.data[index] = res;
+          // const index = this.data.findIndex((d) => d.id === this.editingId);
+          // if (index !== -1) this.data[index] = res;
 
           this.form.reset();
           this.isEdit = false;
           this.editingId = null;
           alert('Data Updated');
         },
-        error: (err) => {
-          console.log('Update error', err.message);
-        },
+        error: (err) => {},
       });
     } else {
       const maxId = this.data.length
@@ -68,7 +67,7 @@ export class StudentInformation {
         : 0;
 
       const dto: StudentData = {
-        id: maxId + 1,
+        id: maxId + 2,
         name: this.form.value.name,
         className: this.form.value.className,
         courses: this.form.value.courses,
@@ -76,12 +75,19 @@ export class StudentInformation {
 
       this.studentService.create(dto).subscribe({
         next: (res) => {
+          this.studentService.getCandidateById(dto.id).subscribe({
+            next: (res) => {
+              this.data.push(res);
+              alert('Data Saved');
+            },
+            error: (err) => {
+              throw err;
+            },
+          });
           this.form.reset();
-          alert('Data Saved');
-          this.data.push(res);
         },
         error: (err) => {
-          console.log('onSave error', err.message);
+          throw err;
         },
       });
     }
@@ -112,7 +118,7 @@ export class StudentInformation {
         alert('Data Deleted');
       },
       error: (err) => {
-        console.log('del error', err);
+        throw err;
       },
     });
   }
