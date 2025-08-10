@@ -24,7 +24,7 @@
     </table>
   </form>
 
-  <div class="show-info">
+  <div class="show-info" *ngIf="data.length > 0">
     <table border="1">
       <thead>
         <tr>
@@ -42,14 +42,10 @@
           <td>{{ items.className }}</td>
           <td>{{ items.courses }}</td>
           <td>
-            <button (click)="editCandidate(items)">edit</button
-            ><button (click)="delCandidate(items)">Delete</button>
+            <button (click)="editCandidate(items)">Edit</button>
+            <button (click)="delCandidate(items)">Delete</button>
           </td>
         </tr>
-        <td>
-          <button (click)="getAllCandidates()">See ALL</button
-          ><button (click)="clear()">Clear</button>
-        </td>
       </tbody>
     </table>
   </div>

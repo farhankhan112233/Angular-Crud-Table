@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 
 import { StudentService } from '../student-service';
-
 import { StudentData } from '../Interface/IstudentData';
 
 @Component({
@@ -16,7 +15,7 @@ import { StudentData } from '../Interface/IstudentData';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './student-information.html',
-  styleUrl: './student-information.scss',
+  styleUrls: ['./student-information.scss'],
 })
 export class StudentInformation {
   private studentService = inject(StudentService);
@@ -24,7 +23,8 @@ export class StudentInformation {
   data: StudentData[] = [];
   form!: FormGroup;
   isEdit: boolean = false;
-  editingId: number | null = null;
+  editingId: any;
+
   formValues() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -32,8 +32,10 @@ export class StudentInformation {
       courses: new FormControl('', Validators.required),
     });
   }
+
   ngOnInit() {
     this.formValues();
+    // this.getAllCandidates();
   }
 
   onSave() {
@@ -42,84 +44,91 @@ export class StudentInformation {
       return;
     }
 
-    if (this.isEdit && this.editingId !== null) {
-      const updatedDto: StudentData = {
-        id: this.editingId,
-        name: this.form.value.name,
-        className: this.form.value.className,
-        courses: this.form.value.courses,
-      };
-      this.studentService.update(updatedDto).subscribe({
-        next: (res) => {
-          // const index = this.data.findIndex((d) => d.id === this.editingId);
-          // if (index !== -1) this.data[index] = res;
+    const dto: StudentData = {
+      name: this.form.value.name,
+      className: this.form.value.className,
+      courses: this.form.value.courses,
+    };
 
-          this.form.reset();
-          this.isEdit = false;
-          this.editingId = null;
+    if (this.isEdit && this.editingId !== null) {
+      dto.id = this.editingId;
+
+      this.studentService.update(dto).subscribe({
+        next: (res) => {
+          this.resetForm();
           alert('Data Updated');
         },
-        error: (err) => {},
+        error: (err) => {
+          console.error(err);
+          alert('Update failed');
+        },
       });
     } else {
-      const maxId = this.data.length
-        ? Math.max(...this.data.map((s) => s.id))
-        : 0;
-
-      const dto: StudentData = {
-        id: maxId + 2,
-        name: this.form.value.name,
-        className: this.form.value.className,
-        courses: this.form.value.courses,
-      };
-
       this.studentService.create(dto).subscribe({
         next: (res) => {
-          this.studentService.getCandidateById(dto.id).subscribe({
-            next: (res) => {
-              this.data.push(res);
-              alert('Data Saved');
-            },
-            error: (err) => {
-              throw err;
-            },
+          this.data.push({
+            id: res.id,
+            name: res.name,
+            className: res.className,
+            courses: res.courses,
           });
-          this.form.reset();
+
+          this.resetForm();
+          alert('Data Saved');
         },
         error: (err) => {
-          throw err;
+          console.error(err);
+          alert('Save failed');
         },
       });
     }
   }
+
   getAllCandidates() {
     this.studentService.getAll().subscribe({
-      next: (res: StudentData[]) => {
-        this.data.push(...res);
+      next: (res: any[]) => {
+        this.data = res.map((item) => ({
+          id: item.id,
+          name: item.name,
+          className: item.className,
+          courses: item.courses,
+        }));
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to load data');
       },
     });
   }
-  clear() {
-    this.data = [];
-  }
+
   editCandidate(item: StudentData) {
     this.isEdit = true;
-    this.form.patchValue({
-      name: item.name ?? '',
-      className: item.className ?? '',
-      courses: item.courses ?? '',
-    });
     this.editingId = item.id;
+    this.form.patchValue({
+      name: item.name,
+      className: item.className,
+      courses: item.courses,
+    });
   }
+
   delCandidate(item: StudentData) {
+    if (!item.id) return;
+
     this.studentService.delete(item.id).subscribe({
-      next: (res) => {
+      next: () => {
         this.data = this.data.filter((d) => d.id !== item.id);
         alert('Data Deleted');
       },
       error: (err) => {
-        throw err;
+        console.error(err);
+        alert('Delete failed');
       },
     });
+  }
+
+  resetForm() {
+    this.form.reset();
+    this.isEdit = false;
+    this.editingId = null;
   }
 }

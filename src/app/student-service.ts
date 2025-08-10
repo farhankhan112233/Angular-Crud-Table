@@ -15,7 +15,9 @@ export class StudentService {
   }
 
   create(dto: StudentData): Observable<StudentData> {
-    return this.http.post<StudentData>(this.apiUrl, dto);
+    return this.http.post<StudentData>(this.apiUrl, dto, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   update(dto: StudentData): Observable<StudentData> {
@@ -24,8 +26,5 @@ export class StudentService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-  getCandidateById(id: number): Observable<StudentData> {
-    return this.http.get<StudentData>(`${this.apiUrl}/${id}`);
   }
 }
