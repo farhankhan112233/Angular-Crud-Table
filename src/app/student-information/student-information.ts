@@ -56,6 +56,13 @@ export class StudentInformation {
       this.studentService.update(dto).subscribe({
         next: (res) => {
           this.resetForm();
+          this.data = [];
+          this.data.push({
+            id: res.id,
+            name: res.name,
+            className: res.className,
+            courses: res.courses,
+          });
           alert('Data Updated');
         },
         error: (err) => {
@@ -86,13 +93,10 @@ export class StudentInformation {
 
   getAllCandidates() {
     this.studentService.getAll().subscribe({
-      next: (res: any[]) => {
-        this.data = res.map((item) => ({
-          id: item.id,
-          name: item.name,
-          className: item.className,
-          courses: item.courses,
-        }));
+      next: (res: any) => {
+        this.data = [];
+        this.data = res;
+        console.log(this.data);
       },
       error: (err) => {
         console.error(err);
@@ -113,17 +117,17 @@ export class StudentInformation {
 
   delCandidate(item: StudentData) {
     if (!item.id) return;
-
-    this.studentService.delete(item.id).subscribe({
-      next: () => {
-        this.data = this.data.filter((d) => d.id !== item.id);
-        alert('Data Deleted');
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Delete failed');
-      },
-    });
+    if (confirm('Are you sure you want to delete this user?'))
+      this.studentService.delete(item.id).subscribe({
+        next: () => {
+          this.data = this.data.filter((d) => d.id !== item.id);
+          alert('Data Deleted');
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Delete failed');
+        },
+      });
   }
 
   resetForm() {
