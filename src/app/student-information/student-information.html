@@ -23,7 +23,7 @@
       </tbody>
     </table>
   </form>
-
+  <button type="submit" (click)="getAllCandidates()">Show All</button>
   <div class="show-info" *ngIf="data.length > 0">
     <table border="1">
       <thead>
@@ -46,6 +46,7 @@
             <button (click)="delCandidate(items)">Delete</button>
           </td>
         </tr>
+        <button (click)="this.data = []">Clear</button>
       </tbody>
     </table>
   </div>
