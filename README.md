@@ -1,59 +1,14 @@
 # CRUD
+Student Information Table – Angular + ASP.NET 8 + SQL Server
+This project is a simple full-stack application where a student can enter their name, class, and courses into an HTML table, then click Save to store the data in a database.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+Frontend: Angular (HTML table UI; CSS not applied as the focus was backend integration)
 
-## Development server
+Backend: ASP.NET 8 with RESTful APIs, using Dependency Injection
 
-To start a local development server, run:
+Database: SQL Server
 
-```bash
-ng serve
-```
+Integration: Full CRUD functionality connecting frontend and backend via REST APIs
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Note: Backend implementation details are in a separate repository
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
