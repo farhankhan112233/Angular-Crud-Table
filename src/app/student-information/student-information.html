@@ -24,6 +24,8 @@
     </table>
   </form>
   <button type="submit" (click)="getAllCandidates()">Show All</button>
+  <input type="number" placeholder="Enter Your Id" #idInput />
+  <button (click)="getCandidateById(+idInput.value)">See Record</button>
   <div class="show-info" *ngIf="data.length > 0">
     <table border="1">
       <thead>
