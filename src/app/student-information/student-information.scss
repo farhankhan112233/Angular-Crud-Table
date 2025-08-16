@@ -1,0 +1,19 @@
+/* Remove all table lines cleanly—modern, borderless table style */
+.field {
+  table {
+    border: none; /* outer border removed */
+    border-collapse: collapse; /* unify borders */
+    border-spacing: 0; /* remove any gaps between cells */
+    background: transparent;
+    width: 100%;
+  }
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td {
+    border: none !important; /* removes any stray cell or header borders */
+    background: transparent;
+  }
+}

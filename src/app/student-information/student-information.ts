@@ -104,6 +104,17 @@ export class StudentInformation {
       },
     });
   }
+  getCandidateById(value: number) {
+    if (!value || value !== +value) {
+      return alert('Enter a valid ID');
+    }
+    this.studentService.getById(value).subscribe({
+      next: (res) => {
+        this.data = [];
+        this.data.push(res);
+      },
+    });
+  }
 
   editCandidate(item: StudentData) {
     this.isEdit = true;
